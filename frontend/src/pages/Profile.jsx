@@ -9,9 +9,11 @@ import { Camera, Loader2, User, Mail, Lock, Wallet } from 'lucide-react';
 import { toast } from 'sonner';
 import apiClient from '@/lib/apiClient';
 import useAuthStore from '@/stores/authStore';
+import { useMonthlySummary } from '@/hooks/useTransactions';
 
 const Profile = () => {
     const { user, setUser } = useAuthStore();
+    const { data: summary } = useMonthlySummary();
     const fileInputRef = useRef(null);
     const [uploading, setUploading] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -140,7 +142,7 @@ const Profile = () => {
                                 <div>
                                     <p className="text-xs font-medium text-muted-foreground">Current Balance</p>
                                     <p className="text-xl font-bold text-violet-600 dark:text-violet-400">
-                                        {formatCurrency(user?.balance)}
+                                        {formatCurrency(summary?.totalBalance)}
                                     </p>
                                 </div>
                             </div>
