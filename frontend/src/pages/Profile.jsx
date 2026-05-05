@@ -131,19 +131,21 @@ const Profile = () => {
                     </div>
 
                     {/* Balance Card */}
-                    <div className="rounded-xl bg-gradient-to-r from-violet-500/10 via-purple-500/10 to-indigo-500/10 p-4">
-                        <div className="flex items-center gap-3">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 shadow-lg">
-                                <Wallet className="h-5 w-5 text-white" />
-                            </div>
-                            <div>
-                                <p className="text-xs font-medium text-muted-foreground">Current Balance</p>
-                                <p className="text-xl font-bold text-violet-600 dark:text-violet-400">
-                                    {formatCurrency(user?.balance)}
-                                </p>
+                    {user?.role !== 'admin' && (
+                        <div className="rounded-xl bg-gradient-to-r from-violet-500/10 via-purple-500/10 to-indigo-500/10 p-4">
+                            <div className="flex items-center gap-3">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 shadow-lg">
+                                    <Wallet className="h-5 w-5 text-white" />
+                                </div>
+                                <div>
+                                    <p className="text-xs font-medium text-muted-foreground">Current Balance</p>
+                                    <p className="text-xl font-bold text-violet-600 dark:text-violet-400">
+                                        {formatCurrency(user?.balance)}
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
 
                     <Separator />
 

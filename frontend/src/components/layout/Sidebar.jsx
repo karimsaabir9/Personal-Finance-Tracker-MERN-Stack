@@ -80,9 +80,11 @@ const Sidebar = ({ isOpen, onClose }) => {
                 {/* Navigation */}
                 <nav className="flex-1 space-y-1 p-4">
                     <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                        Menu
+                        {user?.role === 'admin' ? 'Admin Menu' : 'Menu'}
                     </p>
-                    {navItems.map((item) => (
+
+                    {/* Regular User Menu */}
+                    {user?.role !== 'admin' && navItems.map((item) => (
                         <NavLink
                             key={item.to}
                             to={item.to}
@@ -100,12 +102,9 @@ const Sidebar = ({ isOpen, onClose }) => {
                         </NavLink>
                     ))}
 
+                    {/* Admin Menu */}
                     {user?.role === 'admin' && (
                         <>
-                            <Separator className="my-4" />
-                            <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                                Admin
-                            </p>
                             {adminItems.map((item) => (
                                 <NavLink
                                     key={item.to}
@@ -123,6 +122,22 @@ const Sidebar = ({ isOpen, onClose }) => {
                                     {item.label}
                                 </NavLink>
                             ))}
+                            
+                            {/* Profile is shared for admin but styled consistently */}
+                            <NavLink
+                                to="/profile"
+                                onClick={onClose}
+                                className={({ isActive }) =>
+                                    `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
+                                        isActive
+                                            ? 'bg-gradient-to-r from-amber-500/10 to-orange-500/10 text-amber-600 dark:text-amber-400 shadow-sm'
+                                            : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                                    }`
+                                }
+                            >
+                                <User className="h-5 w-5" />
+                                Profile
+                            </NavLink>
                         </>
                     )}
                 </nav>

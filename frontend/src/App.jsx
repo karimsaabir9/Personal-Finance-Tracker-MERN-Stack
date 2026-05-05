@@ -4,6 +4,7 @@ import { ThemeProvider } from 'next-themes';
 import { Toaster } from 'sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { queryClient } from '@/lib/queryClient';
+import useAuthStore from '@/stores/authStore';
 
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -15,6 +16,15 @@ import Dashboard from '@/pages/Dashboard';
 import Transactions from '@/pages/Transactions';
 import Profile from '@/pages/Profile';
 import Admin from '@/pages/Admin';
+
+const RootRedirect = () => {
+    const { user, isAuthenticated } = useAuthStore();
+    
+    if (!isAuthenticated) return <Navigate to="/login" replace />;
+    if (user?.role === 'admin') return <Navigate to="/admin" replace />;
+    
+    return <Navigate to="/dashboard" replace />;
+};
 
 function App() {
     return (
@@ -49,7 +59,8 @@ function App() {
                             </Route>
 
                             {/* Default redirect */}
-                            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+                            <Route path="/" element={<RootRedirect />} />
+                            <Route path="*" element={<RootRedirect />} />
                         </Routes>
                     </BrowserRouter>
 

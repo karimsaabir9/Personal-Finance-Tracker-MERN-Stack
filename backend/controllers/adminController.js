@@ -19,6 +19,19 @@ export const getAdminOverview = async (req, res, next) => {
             { $limit: 5 }
         ]);
 
+        // Top income categories across all users
+        const topIncomeCategories = await Transaction.aggregate([
+            { $match: { type: 'income' } },
+            {
+                $group: {
+                    _id: "$category",
+                    totalEarned: { $sum: "$amount" }
+                }
+            },
+            { $sort: { totalEarned: -1 } },
+            { $limit: 5 }
+        ]);
+
         // Recent transactions across all users
         const recentTransactions = await Transaction.find()
             .populate('user', 'name email')
@@ -30,6 +43,7 @@ export const getAdminOverview = async (req, res, next) => {
             data: {
                 totalUsers,
                 topSpendingCategories,
+                topIncomeCategories,
                 recentTransactions
             }
         });

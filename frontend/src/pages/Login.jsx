@@ -29,7 +29,11 @@ const Login = () => {
             const { data } = await apiClient.post('/auth/login', { email, password });
             login(data.user, data.token);
             toast.success('Welcome back!');
-            navigate('/dashboard');
+            if (data.user.role === 'admin') {
+                navigate('/admin');
+            } else {
+                navigate('/dashboard');
+            }
         } catch (err) {
             toast.error(err.response?.data?.message || 'Login failed');
         } finally {
